@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Vacante</title>
+</head>
+<body>
+    <form th:action="@{/empresas/vacantes/editar}" th:object="${vacante}" method="post">
+        <input type="hidden" th:field="*{idVacante}"/>
+        <input type="hidden" th:field="*{empresa.idUsuario}"/>
+        <input type="text" th:field="*{titulo}"/>
+        <input type="number" th:field="*{salario}"/>
+        <select th:field="*{modalidad}">
+            <option th:each="modalidad : ${modalidades}" th:value="${modalidad}" th:text="${modalidad}"></option>
+        </select>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</body>
+</html>

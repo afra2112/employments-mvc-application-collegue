@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro Candidatos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+<div class="max-w-md w-full space-y-8 p-8">
+    <div class="text-center">
+        <h2 class="mt-6 text-3xl font-bold text-gray-900">Registro de Candidato</h2>
+        <p class="mt-2 text-sm text-gray-600">Crea tu perfil profesional</p>
+    </div>
+
+    <form class="mt-8 space-y-6" th:action="@{/usuarios/registrarCandidato}" th:object="${candidato}" method="post">
+        <div class="space-y-4">
+            <div>
+                <label for="doc" class="block text-sm font-medium text-gray-700">Documento de Identidad</label>
+                <input id="doc" th:field="*{documento}" type="text" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="nombres" class="block text-sm font-medium text-gray-700">Nombres</label>
+                <input id="nombres" th:field="*{nombres}" type="text" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="apellidos" class="block text-sm font-medium text-gray-700">Apellidos</label>
+                <input id="apellidos" th:field="*{apellidos}" type="text" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="email" th:field="*{email}" type="email" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input id="password" th:field="*{password}" type="password" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
+                <input id="confirmPassword" name="confirmPassword" type="password" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <input type="hidden" th:field="*{tipo}" th:value="CANDIDATO"/>
+        </div>
+
+        <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                Registrar Candidato
+            </button>
+        </div>
+
+        <div class="text-center space-y-2">
+            <a th:href="@{/usuarios/registrarEmpresa}" class="text-blue-600 hover:text-blue-500 text-sm block">
+                ¿Eres empresa? Regístrate aquí
+            </a>
+            <a th:href="@{/login}" class="text-gray-600 hover:text-gray-500 text-sm block">
+                ¿Ya tienes cuenta? Inicia sesión
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

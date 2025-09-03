@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Candidato</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<header class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-gray-900">JobPlatform</h1>
+                <span class="ml-4 px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Candidato</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="openHabilidadesModal()"
+                        class="text-blue-600 hover:text-blue-800 text-sm">Mis Habilidades</button>
+                <!--span class="text-gray-700" th:text="${candidato.nombres + ' ' + candidato.apellidos}">Nombre Candidato</span-->
+                <form class="text-red-600 hover:text-red-800" th:action="@{/logout}" method="post">
+                    <button type="submit">Cerrar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Postulaciones Enviadas</p>
+                    <!--p class="text-2xl font-semibold text-gray-900" th:text="${totalPostulaciones}">0</p-->
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-2 bg-green-100 rounded-lg">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Aceptadas</p>
+                    <!--p class="text-2xl font-semibold text-gray-900" th:text="${postulacionesAceptadas}">0</p-->
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">En Proceso</p>
+                    <!--p class="text-2xl font-semibold text-gray-900" th:text="${postulacionesPendientes}">0</p-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow mb-6">
+        <div class="flex flex-wrap gap-4 items-center">
+            <div>
+                <input type="text" placeholder="Buscar por título..."
+                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <select class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Todas las modalidades</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Remoto">Remoto</option>
+                    <option value="Híbrido">Híbrido</option>
+                </select>
+            </div>
+            <div>
+                <input type="number" placeholder="Salario mínimo..."
+                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+                Buscar
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-medium text-gray-900">Vacantes Disponibles</h2>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+            <!--div th:each="vacante : ${vacantesDisponibles}" class="p-6 hover:bg-gray-50">
+                <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-medium text-gray-900" th:text="${vacante.titulo}">Título del Puesto</h3>
+                        <p class="text-sm text-gray-600 mt-1" th:text="${vacante.empresa.nombre}">Nombre de la Empresa</p>
+                        <div class="flex items-center mt-2 space-x-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                      th:text="${vacante.modalidad}">Modalidad</span>
+                            <span class="text-sm text-gray-500" th:text="'$' + ${vacante.salario}">Salario</span>
+                            <span class="text-sm text-gray-500" th:text="${vacante.empresa.ciudad}">Ciudad</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <button th:onclick="'postularse(' + ${vacante.id} + ')'"
+                                th:disabled="${vacante.yaPostulado}"
+                                th:class="${vacante.yaPostulado} ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'"
+                                class="px-4 py-2 rounded-md text-sm font-medium">
+                            <span th:text="${vacante.yaPostulado} ? 'Ya Postulado' : 'Postularse'">Postularse</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div-->
+    </div>
+
+    <div class="bg-white rounded-lg shadow mt-8">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-medium text-gray-900">Mis Postulaciones</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vacante</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <!--tr th:each="postulacion : ${misPostulaciones}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${postulacion.vacante.titulo}">Título</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${postulacion.vacante.empresa.nombre}">Empresa</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#dates.format(postulacion.fecha, 'dd/MM/yyyy')}">Fecha</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                                <span th:class="${postulacion.estado == 'ACEPTADA'} ? 'bg-green-100 text-green-800' : (${postulacion.estado == 'RECHAZADA'} ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800')"
+                                      class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                                      th:text="${postulacion.estado}">Estado</span>
+                    </td>
+                </tr-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="habilidadesModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Mis Habilidades</h3>
+        </div>
+
+        <div class="p-6">
+            <form th:action="@{/candidato/habilidades}" method="post" class="space-y-4">
+                <div>
+                    <label for="nuevaHabilidad" class="block text-sm font-medium text-gray-700">Nueva Habilidad</label>
+                    <input id="nuevaHabilidad" name="nombre" type="text" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Agregar Habilidad
+                </button>
+            </form>
+
+            <div class="mt-6">
+                <h4 class="text-sm font-medium text-gray-700 mb-3">Habilidades Actuales:</h4>
+                <div class="flex flex-wrap gap-2">
+                        <!--span th:each="habilidad : ${candidato.habilidades}"
+                              class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                            <span th:text="${habilidad.nombre}">Habilidad</span>
+                            <button th:onclick="'eliminarHabilidad(' + ${habilidad.id} + ')'"
+                                    class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                        </span-->
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+                <button onclick="closeHabilidadesModal()"
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function postularse(vacanteId) {
+        if (confirm('¿Deseas postularte a esta vacante?')) {
+            // Enviar postulación
+            fetch('/candidato/postularse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ vacanteId: vacanteId })
+            }).then(() => {
+                location.reload();
+            });
+        }
+    }
+
+    function openHabilidadesModal() {
+        document.getElementById('habilidadesModal').classList.remove('hidden');
+    }
+
+    function closeHabilidadesModal() {
+        document.getElementById('habilidadesModal').classList.add('hidden');
+    }
+
+    function eliminarHabilidad(habilidadId) {
+        if (confirm('¿Deseas eliminar esta habilidad?')) {
+            // Implementar eliminación
+            console.log('Eliminar habilidad:', habilidadId);
+        }
+    }
+</script>
+</body>
+</html>
