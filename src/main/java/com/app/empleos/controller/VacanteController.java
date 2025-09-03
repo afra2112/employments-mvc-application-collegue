@@ -27,8 +27,9 @@ public class VacanteController {
     }
 
     @PostMapping("/registrar")
-    public String registrarVacante(@Valid @ModelAttribute Vacante vacante, BindingResult bindingResult, Authentication authentication, Model model){
+    public String registrarVacante(@Valid @ModelAttribute Vacante vacante, BindingResult bindingResult, Authentication authentication){
         if(bindingResult.hasErrors()){
+            System.out.println("error en el valid");
             return "empresas";
         }
         vacanteService.registrarVacante(vacante, authentication);

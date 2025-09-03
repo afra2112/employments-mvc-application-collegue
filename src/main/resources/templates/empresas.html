@@ -74,10 +74,11 @@
     <div class="bg-white rounded-lg shadow">
         <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
             <h2 class="text-lg font-medium text-gray-900">Mis Vacantes</h2>
-            <button onclick="openVacanteModal()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                + Nueva Vacante
-            </button>
+            <form th:value="@{/empresas/vacantes/registrar}" method="get">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    + Nueva Vacante
+                </button>
+            </form>
         </div>
 
         <div class="overflow-x-auto">
@@ -118,24 +119,24 @@
             <h3 class="text-lg font-medium text-gray-900">Nueva Vacante</h3>
         </div>
 
-        <form th:action="@{/empresas/vacantes/registrar}" method="post" class="p-6 space-y-4">
+        <form  th:action="@{/empresas/vacantes/registrar}" th:object="${vacante}" method="post" class="p-6 space-y-4">
             <div>
                 <label for="titulo" class="block text-sm font-medium text-gray-700">Título del Puesto</label>
-                <input id="titulo" name="titulo" type="text" required
+                <input id="titulo" th:field="*{titulo}" type="text" required
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <div>
                 <label for="salario" class="block text-sm font-medium text-gray-700">Salario</label>
-                <input id="salario" name="salario" type="number" step="0.01" required
+                <input id="salario" th:field="*{salario}" type="number" step="0.01" required
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <div>
                 <label for="modalidad" class="block text-sm font-medium text-gray-700">Modalidad</label>
-                <select id="modalidad" name="modalidad" required
+                <select  id="modalidad" th:field="*{modalidad}" required
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Seleccionar...</option>
+                    <option value=""></option>
                     <option value="Presencial">Presencial</option>
                     <option value="Remoto">Remoto</option>
                     <option value="Híbrido">Híbrido</option>
@@ -190,10 +191,15 @@
     </div>
 </div>
 
-<script>
-    function openVacanteModal() {
+<div th:if="${registroVacante}">
+    <script>
+        function openVacanteModal() {
         document.getElementById('vacanteModal').classList.remove('hidden');
     }
+    </script>
+</div>
+
+<script>
 
     function closeVacanteModal() {
         document.getElementById('vacanteModal').classList.add('hidden');

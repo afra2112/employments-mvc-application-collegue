@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "vacantes")
@@ -24,4 +26,7 @@ public class Vacante {
 
     @Enumerated(EnumType.STRING)
     private ModalidadEnum modalidad;
+
+    @OneToMany(mappedBy = "vacante")
+    private List<Postulacion> postulaciones;
 }
