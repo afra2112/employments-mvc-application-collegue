@@ -1,234 +1,258 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Empresa</title>
+    <title>Panel de Empresa - JobPortal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="font-sans bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
 
-<header class="bg-white shadow-sm border-b">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-            <div class="flex items-center">
-                <h1 class="text-2xl font-bold text-gray-900">JobPlatform</h1>
-                <span class="ml-4 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">Empresa</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-700" th:text="${nombreEmpresa}"></span>
-                <form class="text-red-600 hover:text-red-800" th:action="@{/logout}" method="post">
-                    <button type="submit">Cerrar Sesión</button>
-                </form>
-            </div>
+<header class="bg-white/95 backdrop-blur-sm border-b border-blue-500/10 px-8 py-4 shadow-sm shadow-blue-500/10">
+    <div class="flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-2xl font-bold text-blue-500">JobPortal</div>
+        <div class="flex items-center gap-4">
+            <span class="text-slate-600">Bienvenido <span th:text="${nombreEmpresa}" class="font-medium"></span></span>
+            <form th:action="@{/logout}" method="post">
+                <button class="px-4 py-2 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg font-medium hover:bg-blue-500/20 transition-colors" type="submit">
+                    Cerrar Sesión
+                </button>
+            </form>
         </div>
     </div>
 </header>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-6xl mx-auto px-8 py-8">
+    <h1 class="text-3xl font-bold text-slate-800 mb-8">
+        Panel de Control - <span th:text="${nombreEmpresa}"></span>
+    </h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-2 bg-blue-100 rounded-lg">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
-                    </svg>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
+
+        <div class="bg-white/90 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 shadow-sm shadow-blue-500/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-xl">
+                    📋
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Vacantes Activas</p>
-                    <p class="text-2xl font-semibold text-gray-900" th:text="${vacantes.size()}"></p>
-                </div>
+                <div class="text-sm text-slate-500 font-medium">Vacantes Activas</div>
             </div>
+            <div class="text-3xl font-bold text-slate-800" th:text="${vacantes.size()}">0</div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-2 bg-green-100 rounded-lg">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
+        <div class="bg-white/90 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 shadow-sm shadow-blue-500/10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-xl">
+                    👥
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total Postulaciones</p>
-                    <!--p class="text-2xl font-semibold text-gray-900" th:text="${totalPostulaciones}">0</p-->
-                </div>
+                <div class="text-sm text-slate-500 font-medium">Total Postulaciones</div>
             </div>
+            <div class="text-3xl font-bold text-slate-800" th:text="${postulacionesTotales}"></div>
         </div>
+    </div>
 
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-2 bg-yellow-100 rounded-lg">
-                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+    <form th:action="@{/empresas/index}" method="get" class="mb-12">
+        <input type="hidden" name="registrar" value="true">
+        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+            + Registrar Vacante
+        </button>
+    </form>
+
+    <h2 class="text-2xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+        <span class="filter grayscale opacity-70">📋</span> Mis Vacantes
+    </h2>
+
+    <div class="grid gap-6">
+        <div th:each="vacante : ${vacantes}" class="bg-white/90 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 shadow-sm shadow-blue-500/10">
+            <div>
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-2">Desarrollador Full Stack</h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="flex items-center gap-2 text-sm text-slate-500">
+                                <span class="w-5 h-5 flex items-center justify-center text-blue-500">💰</span>
+                                <span th:text="${vacante.salario}">$50,000</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-slate-500">
+                                <span class="w-5 h-5 flex items-center justify-center text-blue-500">🏠</span>
+                                <span th:text="${vacante.modalidad}">Remoto</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-slate-500">
+                                <span class="w-5 h-5 flex items-center justify-center text-blue-500">👥</span>
+                                <span th:text="${vacante.postulaciones.size()}"></span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-slate-500">
+                                <span class="w-5 h-5 flex items-center justify-center text-blue-500">📅</span>
+                                <span th:text="'Publicado: ' + ${vacante.fechaCreacion}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="px-3 py-1 bg-green-500/10 text-green-600 rounded-full text-xs font-medium">
+                        Activa
+                    </span>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Pendientes Revisión</p>
-                    <!--p class="text-2xl font-semibold text-gray-900" th:text="${postulacionesPendientes}">0</p-->
+
+                <div class="flex gap-3 flex-wrap">
+                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+                        <span>👁️</span> Ver Postulaciones
+                    </a>
+                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg text-sm font-medium hover:bg-blue-500/20 transition-colors">
+                        <span>✏️</span> Editar
+                    </a>
+                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 text-red-600 border border-red-500/20 rounded-lg text-sm font-medium hover:bg-red-500/20 transition-colors">
+                        <span>⏸️</span> Pausar
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="bg-white rounded-lg shadow">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h2 class="text-lg font-medium text-gray-900">Mis Vacantes</h2>
-            <form th:value="@{/empresas/vacantes/registrar}" method="get">
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                    + Nueva Vacante
-                </button>
+<div th:if="${registroVacante}" >
+    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
+
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-500/20 w-full max-w-3xl p-8 relative">
+
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-slate-800">Registrar Vacante</h2>
+                <a th:href="@{/empresas/index}"><button class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button></a>
+            </div>
+
+            <form th:action="@{/empresas/vacantes/registrar}" th:object="${vacante}" method="post" class="space-y-6">
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Título de Vacante</label>
+                    <input type="text" th:field="*{titulo}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Ej: Desarrollador Full Stack">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Salario</label>
+                    <input type="number" th:field="*{salario}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Ej: 5000000">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Modalidad</label>
+                        <select th:field="*{modalidad}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                            <option value="REMOTO">Remoto</option>
+                            <option value="PRESENCIAL">Presencial</option>
+                            <option value="HIBRIDO">Híbrido</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Jornada</label>
+                        <select th:field="*{jornada}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                            <option value="Tiempo Completo">Tiempo Completo</option>
+                            <option value="Medio Tiempo">Medio Tiempo</option>
+                            <option value="Por Horas">Por Horas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Detalles</label>
+                    <textarea th:field="*{detalles}" rows="5" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none" placeholder="Describe las responsabilidades, requisitos y beneficios..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Tipos de Vacante</label>
+
+                    <input type="text" id="tipoVacanteInput" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2" placeholder="Buscar tipo de vacante...">
+
+                    <div id="tipoVacanteSuggestions" class="border border-blue-500/20 rounded-lg bg-white shadow-md max-h-40 overflow-y-auto hidden"></div>
+
+                    <div id="tipoVacanteTags" class="flex flex-wrap gap-2 mt-3"></div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-6">
+                    <a th:href="@{/empresas/index}"><button type="button" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-lg font-medium hover:bg-slate-200 transition-colors">Cancelar</button></a>
+                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">Guardar</button>
+                </div>
             </form>
         </div>
-
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salario</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modalidad</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Postulaciones</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                <tr th:each="vacante : ${vacantes}">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${vacante.titulo}">Título</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${vacante.salario}">Salario</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${vacante.modalidad}">Modalidad</td>
-                    <!--td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${vacante.totalPostulaciones}">0</td-->
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                        <button th:onclick="'verPostulaciones(' + ${vacante.id} + ')'"
-                                class="text-blue-600 hover:text-blue-900">Ver Postulaciones</button>
-                        <button th:onclick="'editarVacante(' + ${vacante.id} + ')'"
-                                class="text-indigo-600 hover:text-indigo-900">Editar</button>
-                        <button th:onclick="'eliminarVacante(' + ${vacante.id} + ')'"
-                                class="text-red-600 hover:text-red-900">Eliminar</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
-</div>
-
-<div id="vacanteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Nueva Vacante</h3>
-        </div>
-
-        <form  th:action="@{/empresas/vacantes/registrar}" th:object="${vacante}" method="post" class="p-6 space-y-4">
-            <div>
-                <label for="titulo" class="block text-sm font-medium text-gray-700">Título del Puesto</label>
-                <input id="titulo" th:field="*{titulo}" type="text" required
-                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
-            <div>
-                <label for="salario" class="block text-sm font-medium text-gray-700">Salario</label>
-                <input id="salario" th:field="*{salario}" type="number" step="0.01" required
-                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
-            <div>
-                <label for="modalidad" class="block text-sm font-medium text-gray-700">Modalidad</label>
-                <select  id="modalidad" th:field="*{modalidad}" required
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                    <option value=""></option>
-                    <option value="Presencial">Presencial</option>
-                    <option value="Remoto">Remoto</option>
-                    <option value="Híbrido">Híbrido</option>
-                </select>
-            </div>
-
-            <div class="flex justify-end space-x-3 pt-4">
-                <button type="button" onclick="closeVacanteModal()"
-                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Cancelar
-                </button>
-                <button type="submit"
-                        class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
-                    Crear Vacante
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="postulacionesModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-96 overflow-y-auto">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Postulaciones</h3>
-        </div>
-
-        <div class="p-6">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Candidato</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody id="postulacionesTableBody" class="bg-white divide-y divide-gray-200">
-                    <!-- Contenido dinámico -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex justify-end pt-4">
-                <button onclick="closePostulacionesModal()"
-                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:if="${registroVacante}">
-    <script>
-        function openVacanteModal() {
-        document.getElementById('vacanteModal').classList.remove('hidden');
-    }
-    </script>
 </div>
 
 <script>
+    const input = document.getElementById("tipoVacanteInput");
+    if (input) {
+        const suggestions = document.getElementById("tipoVacanteSuggestions");
+        const tagsContainer = document.getElementById("tipoVacanteTags");
+        let selected = [];
+        let tiposVacantes = [];
 
-    function closeVacanteModal() {
-        document.getElementById('vacanteModal').classList.add('hidden');
-    }
+        fetch('/api/tipos-vacantes')
+            .then(res => res.json())
+            .then(data => {
+                tiposVacantes = data.map(t => ({
+                    id: t.idTipoVacante,
+                    nombre: t.nombreTipoVacante
+                }));
+            })
 
-    function verPostulaciones(vacanteId) {
-        // Aquí harías una llamada AJAX para obtener las postulaciones
-        document.getElementById('postulacionesModal').classList.remove('hidden');
-    }
+        input.addEventListener("input", () => {
+            const query = input.value.toLowerCase();
+            suggestions.innerHTML = "";
+            if (!query) {
+                suggestions.classList.add("hidden");
+                return;
+            }
 
-    function closePostulacionesModal() {
-        document.getElementById('postulacionesModal').classList.add('hidden');
-    }
+            const filtered = tiposVacantes.filter(t =>
+                t.nombre.toLowerCase().includes(query) &&
+                !selected.some(s => s.id === t.id)
+            );
 
-    function editarVacante(vacanteId) {
-        // Implementar edición
-        console.log('Editar vacante:', vacanteId);
-    }
+            if (filtered.length === 0) {
+                suggestions.classList.add("hidden");
+                return;
+            }
 
-    function eliminarVacante(vacanteId) {
-        if (confirm('¿Estás seguro de que deseas eliminar esta vacante?')) {
-            // Implementar eliminación
-            console.log('Eliminar vacante:', vacanteId);
+            suggestions.classList.remove("hidden");
+
+            filtered.forEach(tipo => {
+                const option = document.createElement("div");
+                option.className = "px-4 py-2 hover:bg-blue-50 cursor-pointer";
+                option.textContent = tipo.nombre;
+                option.onclick = () => {
+                    selected.push(tipo);
+                    renderTags();
+                    input.value = "";
+                    suggestions.classList.add("hidden");
+                };
+                suggestions.appendChild(option);
+            });
+        });
+
+        function renderTags() {
+            tagsContainer.innerHTML = "";
+            selected.forEach(tipo => {
+                const tag = document.createElement("div");
+                tag.className = "flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium";
+                tag.innerHTML = `
+                    ${tipo.nombre}
+                    <button class="text-blue-500 hover:text-blue-700">&times;</button>
+                    <input type="hidden" name="tiposVacantes" value="${tipo.id}">
+                `;
+                tag.querySelector("button").onclick = () => {
+                    selected = selected.filter(t => t.id !== tipo.id);
+                    renderTags();
+                };
+                tagsContainer.appendChild(tag);
+            });
         }
-    }
-
-    function cambiarEstadoPostulacion(postulacionId, nuevoEstado) {
-        // Implementar cambio de estado
-        console.log('Cambiar estado:', postulacionId, nuevoEstado);
     }
 </script>
 </body>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Datos - JobPortal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
+
+<div th:replace="fragments/navbarCandidato :: navbarCandidato"></div>
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold mb-8">Mis Datos - Candidato</h1>
+
+    <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg mb-8">
+        <h2 class="text-2xl font-semibold mb-6">Información Personal</h2>
+        <form th:action="@{/candidatos/mis-datos/editar-datos}" method="post" th:object="${candidato}">
+            <input type="hidden" th:field="*{idUsuario}"/>
+            <input type="hidden" th:field="*{fechaNacimiento}"/>
+            <input type="hidden" th:field="*{password}"/>
+            <input type="hidden" th:field="*{documento}"/>
+            <input type="hidden" th:field="*{tipo}"/>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium text-slate-600 mb-1">Nombres</label>
+                    <input type="text" th:field="*{nombres}" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-slate-600 mb-1">Apellidos</label>
+                    <input type="text" th:field="*{apellidos}" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-slate-600 mb-1">Correo electrónico</label>
+                    <input type="email" th:field="*{email}" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-slate-600 mb-1">Teléfono</label>
+                    <input type="text"  th:field="*{telefono}" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-slate-600 mb-1">Ciudad / Ubicación</label>
+                    <input type="text"  th:field="*{ciudad}" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            <div class="mt-4 flex justify-end gap-3">
+                <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-medium shadow hover:shadow-lg transition">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Educación -->
+    <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">Educación</h2>
+            <button onclick="abrirModal('modalEducacion')" class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">➕ Agregar</button>
+        </div>
+        <div th:each="edu : ${candidato.hojaDeVida.educacion}" class="mb-4 border-b border-blue-100 pb-2 flex justify-between items-start">
+            <div>
+                <p class="text-slate-700 font-medium" th:text="${edu.nivel} + ' - ' + ${edu.institucion}"></p>
+                <p class="text-slate-700 font-medium" th:text="${edu.nombre}"></p>
+                <p class="text-sm text-slate-500" th:text="${edu.fechaInicio} + ' a ' + ${edu.fechaFin}"></p>
+            </div>
+            <div class="flex gap-2">
+                <a th:href="@{/candidatos/educacion/editar(id=${edu.idEducacion})}" class="px-2 py-1 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">✏️</a>
+                <a th:href="@{/candidatos/mis-datos/eliminar-educacion(id=${edu.idEducacion})}" class="px-2 py-1 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50">🗑️</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experiencia Laboral -->
+    <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">Experiencia Laboral</h2>
+            <button onclick="abrirModal('modalExperiencia')" class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">➕ Agregar</button>
+        </div>
+        <div th:each="exp : ${candidato.hojaDeVida.experiencia}" class="mb-4 border-b border-blue-100 pb-2 flex justify-between items-start">
+            <div>
+                <p class="text-slate-700 font-medium" th:text="${exp.cargo} + ' - ' + ${exp.empresa}"></p>
+                <p class="text-sm text-slate-500" th:text="${exp.fechaInicio} + ' a ' + ${exp.fechaFin}"></p>
+                <p class="text-sm text-slate-600" th:text="${exp.descripcion}"></p>
+            </div>
+            <div class="flex gap-2">
+                <a th:href="@{/candidatos/experiencia/editar(id=${exp.idExperiencia})}" class="px-2 py-1 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">✏️</a>
+                <a th:href="@{/candidatos/mis-datos/eliminar-experiencia(id=${exp.idExperiencia})}" class="px-2 py-1 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50">🗑️</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Habilidades -->
+    <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">Habilidades</h2>
+            <button onclick="abrirModal('modalHabilidad')" class="px-4 py-2 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">➕ Agregar</button>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <div th:each="habilidad : ${candidato.hojaDeVida.habilidades}" class="flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                <span th:text="${habilidad.nombreHabilidad}"></span>
+                <a th:href="@{/candidatos/habilidad/editar(id=${habilidad.idHabilidad})}" class="text-blue-500 hover:text-blue-700">✏️</a>
+                <a th:href="@{/candidatos/mis-datos/eliminar-habilidad(id=${habilidad.idHabilidad})}" class="text-red-500 hover:text-red-700">🗑️</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalEducacion" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-lg relative">
+        <button onclick="document.getElementById('modalEducacion').classList.add('hidden')"
+                class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">&times;</button>
+        <h3 class="text-xl font-semibold mb-4">Agregar Educación</h3>
+        <form th:action="@{/candidatos/mis-datos/registrar-educacion}" method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Nivel</label>
+                <select name="nivel" class="w-full px-3 py-2 border rounded-lg">
+                    <option value="Bachillerato">Bachillerato</option>
+                    <option value="Tecnico">Tecnico</option>
+                    <option value="Tecnologo">Tecnologo</option>
+                    <option value="Pregrado">Pregrado</option>
+                    <option value="Postgrado">Postgrado</option>
+                    <option value="Maestria">Maestria</option>
+                    <option value="Doctorado">Doctorado</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Institución</label>
+                <input type="text" name="institucion" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Nombre Del Programa</label>
+                <input type="text" name="nombre" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium">Fecha Inicio</label>
+                    <input type="date" name="fechaInicio" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Fecha Fin</label>
+                    <input type="date" name="fechaFin" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Guardar</button>
+                <button type="button" onclick="document.getElementById('modalEducacion').classList.add('hidden')"
+                        class="px-4 py-2 border rounded-lg hover:bg-gray-100">Cerrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL EXPERIENCIA -->
+<div id="modalExperiencia" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-lg relative">
+        <button onclick="document.getElementById('modalExperiencia').classList.add('hidden')"
+                class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">&times;</button>
+        <h3 class="text-xl font-semibold mb-4">Agregar Experiencia Laboral</h3>
+        <form th:action="@{/candidatos/mis-datos/registrar-experiencia}" method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Cargo</label>
+                <input type="text" name="cargo" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Empresa</label>
+                <input type="text" name="empresa" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium">Fecha Inicio</label>
+                    <input type="date" name="fechaInicio" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Fecha Fin</label>
+                    <input type="date" name="fechaFin" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Descripción</label>
+                <textarea name="descripcion" class="w-full px-3 py-2 border rounded-lg"></textarea>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Guardar</button>
+                <button type="button" onclick="document.getElementById('modalExperiencia').classList.add('hidden')"
+                        class="px-4 py-2 border rounded-lg hover:bg-gray-100">Cerrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modalHabilidad" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-lg relative">
+        <button onclick="document.getElementById('modalHabilidad').classList.add('hidden')"
+                class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">&times;</button>
+        <h3 class="text-xl font-semibold mb-4">Agregar Habilidad</h3>
+        <form th:action="@{/candidatos/mis-datos/registrar-habilidad}" method="post" class="space-y-4">
+            <div class="relative">
+                <label class="block text-sm font-medium">Nombre de la Habilidad</label>
+                <input type="text" id="inputHabilidad" name="nombreHabilidad" autocomplete="off"
+                       class="w-full px-3 py-2 border rounded-lg">
+                <input type="hidden" id="idHabilidadSeleccionada" name="idHabilidad">
+                <ul id="listaHabilidades" class="absolute w-full bg-white border rounded-lg mt-1 max-h-40 overflow-y-auto hidden z-10"></ul>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Guardar</button>
+                <button type="button" onclick="document.getElementById('modalHabilidad').classList.add('hidden')"
+                        class="px-4 py-2 border rounded-lg hover:bg-gray-100">Cerrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function abrirModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function cerrarModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }
+    document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+        modal.addEventListener('click', function(event) {
+            if(event.target === modal) {
+                cerrarModal(modal.id);
+            }
+        });
+    });
+
+const inputHabilidad = document.getElementById('inputHabilidad');
+const listaHabilidades = document.getElementById('listaHabilidades');
+const hiddenId = document.getElementById('idHabilidadSeleccionada');
+
+inputHabilidad.addEventListener('input', async () => {
+    const query = inputHabilidad.value.trim().toLowerCase();
+    hiddenId.value = ''; // limpiar el id si se cambia texto
+    if(query.length === 0) {
+        listaHabilidades.classList.add('hidden');
+        return;
+    }
+
+    const response = await fetch('/api/habilidades');
+    const habilidades = await response.json();
+
+    const filtradas = habilidades.filter(h => h.nombreHabilidad.toLowerCase().includes(query));
+
+    listaHabilidades.innerHTML = '';
+    if(filtradas.length > 0) {
+        filtradas.forEach(h => {
+            const li = document.createElement('li');
+            li.textContent = h.nombreHabilidad;
+            li.className = 'px-3 py-1 hover:bg-blue-100 cursor-pointer';
+            li.addEventListener('click', () => {
+                inputHabilidad.value = h.nombreHabilidad;
+                hiddenId.value = h.idHabilidad;
+                listaHabilidades.classList.add('hidden');
+            });
+            listaHabilidades.appendChild(li);
+        });
+        listaHabilidades.classList.remove('hidden');
+    } else {
+        listaHabilidades.classList.add('hidden');
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if(!inputHabilidad.contains(e.target) && !listaHabilidades.contains(e.target)) {
+        listaHabilidades.classList.add('hidden');
+    }
+});
+</script>
+</body>
+</html>

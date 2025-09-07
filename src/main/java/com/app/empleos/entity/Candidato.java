@@ -2,8 +2,10 @@ package com.app.empleos.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -19,14 +21,18 @@ public class Candidato extends Usuario{
     @NotBlank
     private String apellidos;
 
+    @NotBlank
+    private String telefono;
+
+    @NotBlank
+    private String ciudad;
+
+    @NotNull
+    private LocalDate fechaNacimiento;
+
     @OneToMany(mappedBy = "candidato")
     private List<Postulacion> postulaciones;
 
-    @ManyToMany
-    @JoinTable(
-            name = "candidatos_habilidades",
-            joinColumns = @JoinColumn(name = "id_habilidad"),
-            inverseJoinColumns = @JoinColumn(name = "id_usuario")
-    )
-    private List<Habilidad> habilidades;
+    @OneToOne(mappedBy = "candidato")
+    private HojaDeVida hojaDeVida;
 }

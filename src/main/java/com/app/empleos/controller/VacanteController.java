@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/empresas/vacantes")
@@ -17,14 +18,6 @@ public class VacanteController {
 
     @Autowired
     VacanteService vacanteService;
-
-    @GetMapping("/registrar")
-    public String registrarForm(Model model){
-        model.addAttribute("vacante", new Vacante());
-        model.addAttribute("modalidades", ModalidadEnum.values());
-        model.addAttribute("registroVacante",true);
-        return "empresas";
-    }
 
     @PostMapping("/registrar")
     public String registrarVacante(@Valid @ModelAttribute Vacante vacante, BindingResult bindingResult, Authentication authentication){

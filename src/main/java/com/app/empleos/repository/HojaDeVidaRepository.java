@@ -1,9 +1,9 @@
 package com.app.empleos.repository;
 
-import com.app.empleos.entity.Vacante;
+import com.app.empleos.entity.HojaDeVida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VacanteRepository extends JpaRepository<Vacante, Long> {
+public interface HojaDeVidaRepository extends JpaRepository<HojaDeVida, Long> {
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Vacante - JobPortal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
+
+<div th:replace="fragments/navbarCandidato :: navbarCandidato"></div>
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+
+    <h1 class="text-3xl font-bold mb-6" th:text="${vacante.titulo}">Vacante Título</h1>
+
+    <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg mb-6">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <p class="text-blue-600 font-medium text-lg" th:text="${vacante.empresa.nombre}">Nombre Empresa</p>
+                <p class="text-slate-600 text-sm mt-1" th:text="'Publicado: ' + ${vacante.fechaCreacion}">Publicado: 01/01/2024</p>
+                <p class="text-slate-600 text-sm" th:if="${vacante.fechaFin != null}" th:text="'Cierra: ' + ${vacante.fechaFin}">Cierra: 01/02/2024</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600" th:text="${vacante.modalidad}">Remoto</span>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 text-slate-600 text-sm mb-4">
+            <div class="flex items-center gap-2">💰 <span th:text="${vacante.salario}">75,000</span></div>
+            <div class="flex items-center gap-2">⏰ <span th:text="${vacante.jornada}">Tiempo completo</span></div>
+            <div class="flex items-center gap-2">👥 <span th:text="${#lists.size(vacante.postulaciones)} + ' postulaciones'">0 postulaciones</span></div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span th:each="tipo : ${vacante.tiposVacantes}" class="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium" th:text="${tipo.nombreTipoVacante}">Tipo Vacante</span>
+        </div>
+
+        <h2 class="text-xl font-semibold mb-2">📄 Detalles de la vacante</h2>
+        <p class="text-slate-700 text-sm whitespace-pre-line" th:text="${vacante.detalles}">Descripción completa de la vacante...</p>
+
+        <div th:if="${yaExiste}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-5 mt-5">
+            <span>Ya hiciste una postulacion a esta vacante</span>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+            <form th:action="@{/candidatos/postularme}" method="post">
+                <input type="hidden" name="idCandidato" th:value="${idCandidato}"/>
+                <input type="hidden" name="idVacante" th:value="${vacante.idVacante}"/>
+                <button type="submit" class="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-700 font-medium text-sm shadow hover:shadow-lg">
+                    📝 Postularme
+                </button>
+            </form>
+            <a th:href="@{/candidatos/index}" class="px-4 py-2 rounded-lg text-blue-600 bg-blue-50 border border-blue-200 font-medium text-sm hover:bg-blue-100">
+                👁️ Ver más empresas
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

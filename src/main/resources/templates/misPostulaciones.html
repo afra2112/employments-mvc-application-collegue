@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Postulaciones - JobPortal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
+
+<div th:replace="fragments/navbarCandidato :: navbarCandidato"></div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold mb-8">📋 Mis Postulaciones</h1>
+
+    <div class="grid gap-6 mb-12" th:if="${#lists.isEmpty(postulaciones)}">
+        <p class="text-slate-600 text-center col-span-4">Aún no has postulado a ninguna vacante.</p>
+    </div>
+
+    <div class="grid gap-6 mb-12" th:each="postulacion : ${postulaciones}">
+        <div class="bg-white/90 backdrop-blur border border-blue-100 rounded-xl p-6 shadow-lg">
+            <div class="flex justify-between mb-4 items-start">
+                <div>
+                    <h3 class="text-lg font-semibold" th:text="${postulacion.vacante.titulo}">Vacante Título</h3>
+                    <p class="text-blue-600 font-medium" th:text="${postulacion.vacante.empresa.nombre}">Nombre Empresa</p>
+                    <div class="grid sm:grid-cols-2 gap-2 text-sm text-slate-600 mt-2">
+                        <div class="flex items-center gap-2">📅 <span th:text="'Postulado: ' + ${postulacion.fecha}">15/01/2024</span></div>
+                        <div class="flex items-center gap-2">💰 <span th:text="${postulacion.vacante.salario}">80,000 - 120,000</span></div>
+                        <div class="flex items-center gap-2">🏠 <span th:text="${postulacion.vacante.modalidad}">Remoto</span></div>
+                        <div class="flex items-center gap-2">⏰ <span th:text="${postulacion.vacante.jornada}">Tiempo completo</span></div>
+                    </div>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-medium" th:classappend="${postulacion.estado.name() == 'APLICADO' ? 'bg-blue-50 text-blue-600' : (postulacion.estado == 'CONTRATADO' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600')}" th:text="${postulacion.estado.name()}">En Revisión</span>
+            </div>
+            <div class="flex gap-3 mt-4">
+                <a th:href="@{/candidatos/ver-detalle(id=${postulacion.vacante.idVacante})}" class="px-4 py-2 rounded-lg text-blue-600 bg-blue-50 border border-blue-200 font-medium text-sm hover:bg-blue-100">
+                    👁️ Ver Detalle Vacante
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

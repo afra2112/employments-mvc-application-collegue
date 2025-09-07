@@ -17,5 +17,4 @@ public class Habilidad {
 
     @NotBlank
     private String nombreHabilidad;
-
 }

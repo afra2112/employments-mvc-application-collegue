@@ -39,6 +39,24 @@
             </div>
 
             <div>
+                <label for="telefono" class="block text-sm font-medium text-gray-700">Telefono</label>
+                <input id="telefono" th:field="*{telefono}" type="tel" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="ciudad" class="block text-sm font-medium text-gray-700">Ciudad</label>
+                <input id="ciudad" th:field="*{ciudad}" type="text" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
+                <label for="fechaDeNacimiento" class="block text-sm font-medium text-gray-700">Fecha De Nacimiento</label>
+                <input id="fechaDeNacimiento" th:field="*{fechaNacimiento}" type="date" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+
+            <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
                 <input id="password" th:field="*{password}" type="password" required
                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="navbarCandidato">
+    <header class="bg-white/95 backdrop-blur border-b border-blue-100 shadow-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-600">JobPortal</div>
+            <div class="flex items-center gap-4">
+                <a th:href="@{/candidatos/index}"
+                   class="px-4 py-2 rounded-lg text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-sm font-medium transition">
+                    🔎 Buscar Vacantes
+                </a>
+                <a th:href="@{/candidatos/mis-postulaciones}"
+                   class="px-4 py-2 rounded-lg text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-sm font-medium transition">
+                    📋 Mis Postulaciones
+                </a>
+                <a th:href="@{/candidatos/mis-datos}"
+                   class="px-4 py-2 rounded-lg text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-sm font-medium transition">
+                    🧑🏻 Mis Datos
+                </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="px-4 py-2 rounded-lg text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-sm font-medium transition">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>

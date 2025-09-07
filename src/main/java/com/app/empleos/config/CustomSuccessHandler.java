@@ -18,7 +18,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         String rol = authentication.getAuthorities().iterator().next().getAuthority();
 
         if(rol.equals("EMPRESA")){
-            System.out.println("DETECTO EMPRESA");
             response.sendRedirect("/empresas/index");
         }else{
             System.out.println("DETECTO CANDIDATO");
