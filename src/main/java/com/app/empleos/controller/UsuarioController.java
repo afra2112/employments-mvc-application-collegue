@@ -59,13 +59,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrarEmpresa")
-    public String registrarEmpresa(@Valid @ModelAttribute Empresa empresa, BindingResult bindingResult){
+    public String registrarEmpresa(@Valid @ModelAttribute Empresa empresa, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             System.out.println("error");
             return "redirect:/usuarios/login";
         }
         empresa.setTipo(UsuarioTipoEnum.EMPRESA);
         usuarioService.registrarEmpresa(empresa);
+        redirectAttributes.addFlashAttribute("exitoso", true);
         return "redirect:/usuarios/login";
     }
 }

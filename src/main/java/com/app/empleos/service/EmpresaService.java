@@ -1,5 +1,6 @@
 package com.app.empleos.service;
 
+import com.app.empleos.entity.Empresa;
 import com.app.empleos.entity.Vacante;
 import com.app.empleos.repository.EmpresaRepository;
 import com.app.empleos.repository.VacanteRepository;
@@ -24,5 +25,9 @@ public class EmpresaService {
 
     public String obtenerNombreEmpresa(Authentication authentication){
         return empresaRepository.findByemail(authentication.getName()).getNombre();
+    }
+
+    public Empresa obtenerPorEmail(String email){
+        return empresaRepository.findByemail(email);
     }
 }

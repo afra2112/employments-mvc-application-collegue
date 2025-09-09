@@ -13,5 +13,9 @@ import java.util.List;
 public interface PostulacionRepository extends JpaRepository<Postulacion, Long> {
     List<Postulacion> findByCandidato(Candidato candidato);
 
+    List<Postulacion> findByVacante_Empresa_IdUsuario(Long idUsuario); //el idusuario es el id de la empresa xdd
+
     boolean existsByCandidatoAndVacante(Candidato candidato, Vacante vacante);
+
+    List<Postulacion> findByVacante_IdVacante(Long idVacante);
 }

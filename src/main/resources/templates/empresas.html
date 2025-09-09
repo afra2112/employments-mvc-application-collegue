@@ -19,19 +19,7 @@
 </head>
 <body class="font-sans bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
 
-<header class="bg-white/95 backdrop-blur-sm border-b border-blue-500/10 px-8 py-4 shadow-sm shadow-blue-500/10">
-    <div class="flex justify-between items-center max-w-6xl mx-auto">
-        <div class="text-2xl font-bold text-blue-500">JobPortal</div>
-        <div class="flex items-center gap-4">
-            <span class="text-slate-600">Bienvenido <span th:text="${nombreEmpresa}" class="font-medium"></span></span>
-            <form th:action="@{/logout}" method="post">
-                <button class="px-4 py-2 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg font-medium hover:bg-blue-500/20 transition-colors" type="submit">
-                    Cerrar Sesión
-                </button>
-            </form>
-        </div>
-    </div>
-</header>
+<div th:replace="fragments/navbarEmpresa :: navbarEmpresa"></div>
 
 <div class="max-w-6xl mx-auto px-8 py-8">
     <h1 class="text-3xl font-bold text-slate-800 mb-8">
@@ -77,16 +65,16 @@
             <div>
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h3 class="text-xl font-semibold text-slate-800 mb-2">Desarrollador Full Stack</h3>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-2" th:text="${vacante.titulo}"></h3>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <div class="flex items-center gap-2 text-sm text-slate-500">
                                 <span class="w-5 h-5 flex items-center justify-center text-blue-500">💰</span>
-                                <span th:text="${vacante.salario}">$50,000</span>
+                                <span th:text="${vacante.salario}"></span>
                             </div>
                             <div class="flex items-center gap-2 text-sm text-slate-500">
                                 <span class="w-5 h-5 flex items-center justify-center text-blue-500">🏠</span>
-                                <span th:text="${vacante.modalidad}">Remoto</span>
+                                <span th:text="${vacante.modalidad}"></span>
                             </div>
                             <div class="flex items-center gap-2 text-sm text-slate-500">
                                 <span class="w-5 h-5 flex items-center justify-center text-blue-500">👥</span>
@@ -105,14 +93,11 @@
                 </div>
 
                 <div class="flex gap-3 flex-wrap">
-                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+                    <a th:href="@{/empresas/vacantes/postulaciones/{id}(id=${vacante.idVacante})}" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">
                         <span>👁️</span> Ver Postulaciones
                     </a>
-                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg text-sm font-medium hover:bg-blue-500/20 transition-colors">
+                    <a th:href="@{/empresas/index(editar=true, id=${vacante.idVacante})}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg text-sm font-medium hover:bg-blue-500/20 transition-colors">
                         <span>✏️</span> Editar
-                    </a>
-                    <a href="#" class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 text-red-600 border border-red-500/20 rounded-lg text-sm font-medium hover:bg-red-500/20 transition-colors">
-                        <span>⏸️</span> Pausar
                     </a>
                 </div>
             </div>
@@ -120,32 +105,43 @@
     </div>
 </div>
 
-<div th:if="${registroVacante}" >
+<div th:if="${registroVacante or editarVacante}">
     <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
-
         <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-500/20 w-full max-w-3xl p-8 relative">
 
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-slate-800">Registrar Vacante</h2>
-                <a th:href="@{/empresas/index}"><button class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button></a>
+                <h2 class="text-2xl font-semibold text-slate-800"
+                    th:text="${editarVacante} ? 'Editar Vacante' : 'Registrar Vacante'">
+                </h2>
+                <a th:href="@{/empresas/index}">
+                    <button class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
+                </a>
             </div>
 
-            <form th:action="@{/empresas/vacantes/registrar}" th:object="${vacante}" method="post" class="space-y-6">
+            <form th:action="${editarVacante} ? @{/empresas/vacantes/editar} : @{/empresas/vacantes/registrar}"
+                  th:object="${vacante}" method="post" class="space-y-6">
+
+                <input type="hidden" th:field="*{idVacante}"/>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Título de Vacante</label>
-                    <input type="text" th:field="*{titulo}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Ej: Desarrollador Full Stack">
+                    <input type="text" th:field="*{titulo}"
+                           class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                           placeholder="Ej: Desarrollador Full Stack">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Salario</label>
-                    <input type="number" th:field="*{salario}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Ej: 5000000">
+                    <input type="number" th:field="*{salario}"
+                           class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                           placeholder="Ej: 5000000">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Modalidad</label>
-                        <select th:field="*{modalidad}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <select th:field="*{modalidad}"
+                                class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                             <option value="REMOTO">Remoto</option>
                             <option value="PRESENCIAL">Presencial</option>
                             <option value="HIBRIDO">Híbrido</option>
@@ -153,7 +149,8 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Jornada</label>
-                        <select th:field="*{jornada}" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        <select th:field="*{jornada}"
+                                class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
                             <option value="Tiempo Completo">Tiempo Completo</option>
                             <option value="Medio Tiempo">Medio Tiempo</option>
                             <option value="Por Horas">Por Horas</option>
@@ -163,22 +160,42 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Detalles</label>
-                    <textarea th:field="*{detalles}" rows="5" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none" placeholder="Describe las responsabilidades, requisitos y beneficios..."></textarea>
+                    <textarea th:field="*{detalles}" rows="5"
+                              class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+                              placeholder="Describe las responsabilidades, requisitos y beneficios..."></textarea>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Tipos de Vacante</label>
 
-                    <input type="text" id="tipoVacanteInput" class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2" placeholder="Buscar tipo de vacante...">
+                    <input type="text" id="tipoVacanteInput"
+                           class="w-full px-4 py-2 border border-blue-500/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2"
+                           placeholder="Buscar tipo de vacante...">
 
-                    <div id="tipoVacanteSuggestions" class="border border-blue-500/20 rounded-lg bg-white shadow-md max-h-40 overflow-y-auto hidden"></div>
+                    <div id="tipoVacanteSuggestions"
+                         class="border border-blue-500/20 rounded-lg bg-white shadow-md max-h-40 overflow-y-auto hidden"></div>
 
-                    <div id="tipoVacanteTags" class="flex flex-wrap gap-2 mt-3"></div>
+                    <div id="tipoVacanteTags" class="flex flex-wrap gap-2 mt-3">
+                        <span th:each="tipo : ${vacante.tiposVacantes}"
+                              class="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                            <span th:text="${tipo.nombreTipoVacante}">Backend</span>
+                            <input type="hidden" name="tiposVacantes" th:value="${tipo.idTipoVacante}"/>
+                            <button type="button" class="text-blue-500 hover:text-blue-700">&times;</button>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-6">
-                    <a th:href="@{/empresas/index}"><button type="button" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-lg font-medium hover:bg-slate-200 transition-colors">Cancelar</button></a>
-                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">Guardar</button>
+                    <a th:href="@{/empresas/index}">
+                        <button type="button"
+                                class="px-6 py-2 bg-slate-100 text-slate-600 rounded-lg font-medium hover:bg-slate-200 transition-colors">
+                            Cancelar
+                        </button>
+                    </a>
+                    <button type="submit"
+                            class="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-medium hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+                        Guardar
+                    </button>
                 </div>
             </form>
         </div>

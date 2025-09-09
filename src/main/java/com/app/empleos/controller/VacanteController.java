@@ -10,7 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/empresas/vacantes")
@@ -29,16 +30,11 @@ public class VacanteController {
         return "redirect:/empresas/index";
     }
 
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model, Authentication authentication){
-        model.addAttribute("vacante", vacanteService.obtenerPorIdYAgregarEmpresa(id, authentication));
-        model.addAttribute("modalidades", ModalidadEnum.values());
-        return "editarVacante";
-    }
-
     @PostMapping("/editar")
-    public String editarVacante(@ModelAttribute Vacante vacante){
-        vacanteService.editarVacante(vacante);
+    public String editar(@ModelAttribute Vacante vacante,
+                         @RequestParam(required = false, name = "tiposVacantes") List<Long> tiposVacantesIds,
+                         Authentication authentication) {
+        vacanteService.editarVacante(vacante, tiposVacantesIds, authentication);
         return "redirect:/empresas/index";
     }
 
@@ -46,5 +42,12 @@ public class VacanteController {
     public String eliminar(@RequestParam("idVacante") Long id){
         vacanteService.eliminarVacante(id);
         return "redirect:/empresas/index";
+    }
+
+    @GetMapping("/postulaciones/{id}")
+    public String verPostulaciones(@PathVariable(name = "id") Long id, Model model){
+        Vacante vacante = vacanteService.obtenerPorId(id).orElseThrow();
+        model.addAttribute("vacante", vacante);
+        return "postulacionesVacante";
     }
 }

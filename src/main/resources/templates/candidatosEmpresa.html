@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidatos - Dashboard Empresa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
+
+<div th:replace="fragments/navbarEmpresa :: navbarEmpresa"></div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-blue-700">👥 Candidatos Postulados</h1>
+        <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium shadow"
+              th:text="'Total: ' + ${#lists.size(postulaciones)}">Total: 0</span>
+    </div>
+
+    <form method="get" th:action="@{/empresas/candidatos}" class="mb-6 flex items-center gap-3">
+        <label for="vacante" class="text-sm font-medium text-slate-600">Filtrar por vacante:</label>
+        <select id="vacante" name="idVacante"
+                class="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+            <option value="">Todas</option>
+            <option th:each="vacante : ${vacantes}" th:value="${vacante.idVacante}" th:text="${vacante.titulo}"></option>
+        </select>
+        <button type="submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm shadow hover:bg-blue-700 transition">
+            🔍 Filtrar
+        </button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(postulaciones)}"
+         class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded mb-6">
+        No hay postulaciones registradas todavía.
+    </div>
+
+    <div class="space-y-5" th:each="postulacion : ${postulaciones}">
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow hover:shadow-md transition">
+
+            <div class="flex justify-between items-start">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900"
+                        th:text="${postulacion.candidato.nombres}">Nombre Candidato</h2>
+                    <p class="text-sm text-slate-600">
+                        ✉️ <span th:text="${postulacion.candidato.email}">correo</span> •
+                        📞 <span th:text="${postulacion.candidato.telefono}">teléfono</span>
+                    </p>
+                    <p class="text-xs text-slate-500 mt-1">
+                        Vacante: <span class="font-medium" th:text="${postulacion.vacante.titulo}">Título Vacante</span>
+                    </p>
+                </div>
+
+                <span th:if="${postulacion.estado == 'PENDIENTE'}"
+                      class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                      Pendiente
+                </span>
+                <span th:if="${postulacion.estado == 'ACEPTADA'}"
+                      class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                      Aceptada
+                </span>
+                <span th:if="${postulacion.estado == 'RECHAZADA'}"
+                      class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                      Rechazada
+                </span>
+            </div>
+
+            <div class="flex justify-end gap-2 mt-4">
+                <a th:href="@{/empresas/candidatos/{id}(id=${postulacion.candidato.idUsuario})}"
+                   class="px-4 py-2 bg-blue-50 border border-blue-200 text-blue-600 text-sm rounded-lg hover:bg-blue-100 transition">
+                    👁️ Ver Perfil
+                </a>
+                <a th:href="@{/postulaciones/aceptar/{id}(id=${postulacion.id})}"
+                   class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition">
+                    ✅ Aceptar
+                </a>
+                <a th:href="@{/postulaciones/rechazar/{id}(id=${postulacion.id})}"
+                   class="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition">
+                    ❌ Rechazar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-10">
+        <a th:href="@{/empresas/index}"
+           class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition">
+            ← Volver al Dashboard
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

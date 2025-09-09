@@ -1,5 +1,6 @@
 package com.app.empleos.service;
 
+import com.app.empleos.entity.Empresa;
 import com.app.empleos.entity.Postulacion;
 import com.app.empleos.entity.TipoVacante;
 import com.app.empleos.entity.Vacante;
@@ -51,8 +52,22 @@ public class VacanteService {
         return tipoVacanteRepository.findAll();
     }
 
-    public void editarVacante(Vacante vacante){
-        vacanteRepository.save(vacante);
+    public void editarVacante(Vacante vacante, List<Long> tiposVacantesIds, Authentication authentication) {
+        Vacante vacanteExistente = vacanteRepository.findById(vacante.getIdVacante())
+                .orElseThrow(() -> new RuntimeException("Vacante no encontrada"));
+        vacanteExistente.setTitulo(vacante.getTitulo());
+        vacanteExistente.setSalario(vacante.getSalario());
+        vacanteExistente.setModalidad(vacante.getModalidad());
+        vacanteExistente.setJornada(vacante.getJornada());
+        vacanteExistente.setDetalles(vacante.getDetalles());
+        if (tiposVacantesIds != null) {
+            List<TipoVacante> tipos = tipoVacanteRepository.findAllById(tiposVacantesIds);
+            vacanteExistente.setTiposVacantes(tipos);
+        } else {
+            vacanteExistente.getTiposVacantes().clear();
+        }
+
+        vacanteRepository.save(vacanteExistente);
     }
 
     public void eliminarVacante(Long id){vacanteRepository.deleteById(id);}
@@ -60,4 +75,8 @@ public class VacanteService {
     public List<Vacante> obtenerTodasLasVacantes(){return vacanteRepository.findAll();}
 
     public Optional<Vacante> obtenerPorId(Long id){return vacanteRepository.findById(id);}
+
+    public List<Vacante> obtenerPorEmpresa(Empresa empresa){
+        return vacanteRepository.findByEmpresa(empresa);
+    }
 }

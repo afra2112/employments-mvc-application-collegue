@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Candidato</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-white min-h-screen text-slate-800">
+
+<div th:replace="fragments/navbarEmpresa :: navbarEmpresa"></div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow mb-8">
+        <h1 class="text-3xl font-bold text-blue-700 mb-2"
+            th:text="${candidato.nombres + ' ' + candidato.apellidos}">
+            Nombre Candidato
+        </h1>
+        <p class="text-slate-600 text-sm">
+            📍 <span th:text="${candidato.ciudad}">Ciudad</span>
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow md:col-span-2">
+            <h2 class="text-lg font-semibold mb-4">📌 Información Personal</h2>
+            <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-700">
+                <div>
+                    <p class="font-medium">Documento:</p>
+                    <p th:text="${candidato.documento}">123456789</p>
+                </div>
+                <div>
+                    <p class="font-medium">Teléfono:</p>
+                    <p th:text="${candidato.telefono}">+57 300 123 4567</p>
+                </div>
+                <div>
+                    <p class="font-medium">Email:</p>
+                    <p th:text="${candidato.email}">correo@ejemplo.com</p>
+                </div>
+                <div>
+                    <p class="font-medium">Ciudad:</p>
+                    <p th:text="${candidato.ciudad}">Bogotá</p>
+                </div>
+                <div>
+                    <p class="font-medium">Fecha Nacimiento:</p>
+                    <p th:text="${candidato.fechaNacimiento}">1995-06-10</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow">
+            <h2 class="text-lg font-semibold mb-4">📂 Historial de Postulaciones</h2>
+            <div th:if="${#lists.isEmpty(candidato.postulaciones)}"
+                 class="bg-yellow-50 text-yellow-700 px-3 py-2 rounded text-sm">
+                Este candidato aún no tiene postulaciones registradas.
+            </div>
+            <ul class="space-y-3" th:each="post : ${candidato.postulaciones}">
+                <li class="border-b pb-2">
+                    <p class="font-medium text-slate-800" th:text="${post.vacante.titulo}">Vacante</p>
+                    <p class="text-xs text-slate-500" th:text="${post.fecha}">2023-05-15</p>
+
+                    <span th:if="${post.estado == 'PENDIENTE'}"
+                          class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                          Pendiente
+                    </span>
+                    <span th:if="${post.estado == 'ACEPTADA'}"
+                          class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                          Aceptada
+                    </span>
+                    <span th:if="${post.estado == 'RECHAZADA'}"
+                          class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                          Rechazada
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow">
+        <h2 class="text-lg font-semibold mb-4">📄 Hoja de Vida</h2>
+
+        <div class="mb-6">
+            <p class="font-medium text-slate-800 mb-2">🎓 Educación</p>
+            <div th:if="${#lists.isEmpty(candidato.hojaDeVida.educacion)}"
+                 class="text-sm text-slate-500 italic">No se registró información educativa.</div>
+            <ul class="space-y-3" th:each="edu : ${candidato.hojaDeVida.educacion}">
+                <li class="border-l-4 border-blue-500 pl-3">
+                    <p class="font-semibold text-slate-700" th:text="${edu.nombre}">Título</p>
+                    <p class="text-sm text-slate-600" th:text="${edu.institucion}">Institución</p>
+                    <p class="text-xs text-slate-500">
+                        <span th:text="${edu.fechaInicio}">2018</span> -
+                        <span th:text="${edu.fechaFin}">2022</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-6">
+            <p class="font-medium text-slate-800 mb-2">💼 Experiencia</p>
+            <div th:if="${#lists.isEmpty(candidato.hojaDeVida.experiencia)}"
+                 class="text-sm text-slate-500 italic">No se registró experiencia laboral.</div>
+            <ul class="space-y-3" th:each="exp : ${candidato.hojaDeVida.experiencia}">
+                <li class="border-l-4 border-green-500 pl-3">
+                    <p class="font-semibold text-slate-700" th:text="${exp.cargo}">Cargo</p>
+                    <p class="text-sm text-slate-600" th:text="${exp.empresa}">Empresa</p>
+                    <p class="text-xs text-slate-500">
+                        <span th:text="${exp.fechaInicio}">2019</span> -
+                        <span th:text="${exp.fechaFin}">2023</span>
+                    </p>
+                    <p class="text-sm text-slate-500 mt-1" th:text="${exp.descripcion}">Descripción</p>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <p class="font-medium text-slate-800 mb-2">🛠️ Habilidades</p>
+            <div th:if="${#lists.isEmpty(candidato.hojaDeVida.habilidades)}"
+                 class="text-sm text-slate-500 italic">No se registraron habilidades.</div>
+            <div class="flex flex-wrap gap-2">
+                <span th:each="hab : ${candidato.hojaDeVida.habilidades}"
+                      class="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium"
+                      th:text="${hab.nombreHabilidad}">Java</span>
+            </div>
+        </div>
+
+        <!--div class="mt-6">
+            <a th:href="@{/candidatos/cv/{id}(id=${candidato.idUsuario})}"
+               class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-sm font-medium shadow hover:shadow-lg">
+                ⬇️ Descargar CV
+            </a>
+        </div-->
+    </div>
+
+    <div class="mt-8">
+        <a th:href="@{/empresas/candidatos}"
+           class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition">
+            ← Volver a Candidatos
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

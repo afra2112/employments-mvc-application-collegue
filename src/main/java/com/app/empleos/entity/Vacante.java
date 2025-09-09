@@ -39,7 +39,7 @@ public class Vacante {
     @Enumerated(EnumType.STRING)
     private ModalidadEnum modalidad;
 
-    @OneToMany(mappedBy = "vacante")
+    @OneToMany(mappedBy = "vacante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Postulacion> postulaciones;
 
     @ManyToMany
