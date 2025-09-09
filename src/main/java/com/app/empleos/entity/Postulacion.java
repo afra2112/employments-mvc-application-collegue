@@ -27,4 +27,6 @@ public class Postulacion {
 
     @Enumerated(EnumType.STRING)
     private EstadoEnum estado;
+
+    private boolean hdVista = false;
 }

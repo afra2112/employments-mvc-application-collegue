@@ -20,4 +20,8 @@ public class PostulacionService {
     public List<Postulacion> obtenerPostulacionesPorVacante(Long idVacante){
         return postulacionRepository.findByVacante_IdVacante(idVacante);
     }
+
+    public void colocarHdvVista(){
+
+    }
 }

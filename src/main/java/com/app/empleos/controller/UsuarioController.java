@@ -47,6 +47,10 @@ public class UsuarioController {
 
     @PostMapping("/registrarCandidato")
     public String registrarCandidato(@Valid @ModelAttribute Candidato candidato, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if(usuarioService.existeCandidatoPorEmailODocumento(candidato.getEmail(), candidato.getDocumento())){
+            redirectAttributes.addFlashAttribute("yaExiste", true);
+            return "redirect:/usuarios/registrarCandidato";
+        }
         if(bindingResult.hasErrors()){
             System.out.println("error" + bindingResult.getAllErrors());
             return "redirect:/usuarios/login";
@@ -60,6 +64,10 @@ public class UsuarioController {
 
     @PostMapping("/registrarEmpresa")
     public String registrarEmpresa(@Valid @ModelAttribute Empresa empresa, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if(usuarioService.existeEmpresaPorEmail(empresa.getEmail())){
+            redirectAttributes.addFlashAttribute("yaExiste", true);
+            return "redirect:/usuarios/registrarEmpresa";
+        }
         if(bindingResult.hasErrors()){
             System.out.println("error");
             return "redirect:/usuarios/login";

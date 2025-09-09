@@ -93,4 +93,5 @@ public class CandidatoService {
     public void editarCandidato(Candidato candidato){
         candidatoRepository.save(candidato);
     }
+
 }

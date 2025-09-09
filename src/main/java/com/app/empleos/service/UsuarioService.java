@@ -33,4 +33,12 @@ public class UsuarioService {
         empresa.setPassword(passwordEncoder.encode(empresa.getPassword()));
         empresaRepository.save(empresa);
     }
+
+    public boolean existeCandidatoPorEmailODocumento(String email, String documento){
+        return candidatoRepository.existsByEmailOrDocumento(email, documento);
+    }
+
+    public boolean existeEmpresaPorEmail(String email){
+        return empresaRepository.existsByEmail(email);
+    }
 }

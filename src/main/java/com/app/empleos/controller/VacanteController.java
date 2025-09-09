@@ -24,14 +24,14 @@ public class VacanteController {
     public String registrarVacante(@Valid @ModelAttribute Vacante vacante, BindingResult bindingResult, Authentication authentication){
         if(bindingResult.hasErrors()){
             System.out.println("error en el valid");
-            return "empresas";
+            return "redirect:/empresas/index";
         }
         vacanteService.registrarVacante(vacante, authentication);
         return "redirect:/empresas/index";
     }
 
     @PostMapping("/editar")
-    public String editar(@ModelAttribute Vacante vacante,
+    public String editar(@Valid @ModelAttribute Vacante vacante,
                          @RequestParam(required = false, name = "tiposVacantes") List<Long> tiposVacantesIds,
                          Authentication authentication) {
         vacanteService.editarVacante(vacante, tiposVacantesIds, authentication);
