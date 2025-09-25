@@ -3,6 +3,7 @@ package com.app.empleos.controller;
 import com.app.empleos.config.enums.EstadoEnum;
 import com.app.empleos.entity.*;
 import com.app.empleos.service.CandidatoService;
+import com.app.empleos.service.ConsultasMulticriterioVacantes;
 import com.app.empleos.service.VacanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/candidatos")
@@ -24,10 +26,23 @@ public class CandidatoController {
     @Autowired
     CandidatoService candidatoService;
 
+    @Autowired
+    ConsultasMulticriterioVacantes consultasMulticriterioVacantes;
+
     @GetMapping("/index")
-    public String index(Model model, Authentication authentication){
+    public String index(
+            @RequestParam(required = false, name = "nombreEmpresa") String nombreEmpresa,
+            @RequestParam(required = false, name = "tituloVacante") String tituloVacante,
+            @RequestParam(required = false, name = "modalidad") String modalidad,
+            @RequestParam(required = false, name = "ordenarPor") String ordernarPor,
+            Model model,
+            Authentication authentication){
+
+        System.out.println("RESULTADO: " + nombreEmpresa + tituloVacante + modalidad + ordernarPor);
+
+        List<Vacante> vacantes = consultasMulticriterioVacantes.filtrarVacantes(nombreEmpresa, tituloVacante, modalidad, ordernarPor);
         model.addAttribute("nombreCandidato",candidatoService.obtenerNombrePorEmail(authentication.getName()));
-        model.addAttribute("vacantes",vacanteService.obtenerTodasLasVacantes());
+        model.addAttribute("vacantes", vacantes);
         model.addAttribute("idCandidato", candidatoService.obtenerPorEmail(authentication.getName()).getIdUsuario());
         return "candidatos";
     }
